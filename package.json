@@ -1,0 +1,33 @@
+{
+  "name": "sse-infrastructure",
+  "version": "1.0.0",
+  "description": "Infrastructure for sse project",
+  "author": "David Bowland",
+  "engines": {
+    "node": "^22.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidbowland/sse-infrastructure.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidbowland/sse-infrastructure/issues"
+  },
+  "homepage": "https://github.com/davidbowland/sse-infrastructure#readme",
+  "scripts": {
+    "deploy": "./deploy.sh",
+    "prepare": "husky",
+    "lint": "prettier --write .",
+    "update": "ncu --target minor --upgrade && npm audit fix --audit-level=none && npm dedupe"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3"
+  },
+  "lint-staged": {
+    "**/*": [
+      "prettier --write --ignore-unknown"
+    ]
+  }
+}
