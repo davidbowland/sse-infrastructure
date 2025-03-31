@@ -1,4 +1,4 @@
-# SSE Infrastructure
+# Spectrum Street Epistemology Infrastructure
 
 Infrastructure as Code for sse project.
 

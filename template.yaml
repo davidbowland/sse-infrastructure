@@ -79,9 +79,9 @@ Resources:
       RoleName: !FindInMap [EnvironmentMap, !Ref Environment, roleNameCloudFormation]
       Tags:
         - Key: 'created-by'
-          Value: 'links-infrastructure'
+          Value: 'sse-infrastructure'
         - Key: 'created-for'
-          Value: 'links'
+          Value: 'sse'
         - Key: 'environment'
           Value: !Ref Environment
 
@@ -125,9 +125,9 @@ Resources:
       RoleName: !FindInMap [EnvironmentMap, !Ref Environment, roleNamePipeline]
       Tags:
         - Key: 'created-by'
-          Value: 'links-infrastructure'
+          Value: 'sse-infrastructure'
         - Key: 'created-for'
-          Value: 'links'
+          Value: 'sse'
         - Key: 'environment'
           Value: !Ref Environment
 
