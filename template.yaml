@@ -116,8 +116,8 @@ Resources:
                   - 's3:GetBucket*'
                   - 's3:List*'
                 Resource:
-                  - 'arn:aws:s3:::sse-ui-source/*'
-                  - 'arn:aws:s3:::sse-ui-source'
+                  - 'arn:aws:s3:::sse-ui/*'
+                  - 'arn:aws:s3:::sse-ui'
                   - 'arn:aws:s3:::sse-ui-test/*'
                   - 'arn:aws:s3:::sse-ui-test'
                   - !Sub 'arn:aws:s3:::${LambdaBucket}/*'
