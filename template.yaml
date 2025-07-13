@@ -178,14 +178,3 @@ Resources:
           Value: 'sse'
         - Key: 'environment'
           Value: !Ref Environment
-
-  # Analytics
-
-  Pinpoint:
-    Type: AWS::Pinpoint::App
-    Properties:
-      Name: !FindInMap [EnvironmentMap, !Ref Environment, project]
-      Tags:
-        'created-by': 'sse-infrastructure'
-        'created-for': 'sse'
-        'environment': !Ref Environment
