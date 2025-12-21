@@ -178,3 +178,57 @@ Resources:
           Value: 'sse'
         - Key: 'environment'
           Value: !Ref Environment
+
+  # Authorization
+
+  IdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      AllowClassicFlow: false
+      AllowUnauthenticatedIdentities: true
+      IdentityPoolName: !FindInMap [EnvironmentMap, !Ref Environment, project]
+
+  IdentityPoolRoleAttachment:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId: !Ref IdentityPool
+      Roles:
+        'unauthenticated': !Sub '${UnauthenticatedRole.Arn}'
+
+  UnauthenticatedRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated:
+                - cognito-identity.amazonaws.com
+            Action:
+              - 'sts:AssumeRoleWithWebIdentity'
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud:
+                  - !Ref IdentityPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr:
+                  - unauthenticated
+      Policies:
+        - PolicyName: !Sub
+            - '${Project}-transcribe-unauthenticated'
+            - Project: !FindInMap [EnvironmentMap, !Ref Environment, project]
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'transcribe:StartStreamTranscriptionWebSocket'
+                Resource: '*'
+      Tags:
+        - Key: 'created-by'
+          Value: 'sse-infrastructure'
+        - Key: 'created-for'
+          Value: !FindInMap [EnvironmentMap, !Ref Environment, project]
+        - Key: 'environment'
+          Value: !Ref Environment
