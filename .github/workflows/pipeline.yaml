@@ -2,7 +2,6 @@ name: Pipeline
 
 env:
   HUSKY: 0
-  GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
   PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/full-access
   PROD_STACK_NAME: sse-infrastructure
   TEMPLATE_NAME: template.yaml
@@ -11,8 +10,12 @@ env:
 
 on: push
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build-and-deploy-feature:
@@ -124,6 +127,8 @@ jobs:
     name: Bump the version number and tag the commit
     needs: [deploy-production]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout latest code
         uses: actions/checkout@v6
@@ -133,6 +138,8 @@ jobs:
           node-version: 24.x
 
       - name: Set git name and email
+        env:
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
         run: |
           git config --local user.email "${GIT_EMAIL}"
           git config --local user.name "github-actions[bot]"
